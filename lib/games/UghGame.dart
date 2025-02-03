@@ -16,6 +16,7 @@ class UghGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionD
   late EmberPlayer player;
   late Secondplayer player2;
   late ParallaxComponent parallax;
+  int vivos = 2;
 
   @override
   Future<void> onLoad() async {
@@ -31,7 +32,7 @@ class UghGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionD
       'Owlet_Monster_Death_8.png',
       'Dude_Monster_Death_8.png',
       "Owlet_Monster_Jump_8.png",
-      "Owlet_Monster.png"// Asegúrate de tener esta imagen en tus assets
+      "Owlet_Monster.png" // Asegúrate de tener esta imagen en tus assets
     ]);
 
     // Carga y añade el parallax (fondo)
@@ -66,10 +67,18 @@ class UghGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionD
     // Añade los bloques del suelo al mundo
     final colisionSuelos = map.tileMap.getLayer<ObjectGroup>('suelo');
     for (final suelos in colisionSuelos!.objects) {
-      world.add(GroundBlock(position: Vector2(suelos.x, suelos.y), size: Vector2(suelos.width, suelos.height)));
+      world.add(GroundBlock(position: Vector2(suelos.x, suelos.y),
+          size: Vector2(suelos.width, suelos.height)));
     }
 
     // Añade el mapa al mundo
     world.add(map);
   }
+
+  void acabar() {
+    overlays.add('gameover');
+  }
+
+
 }
+

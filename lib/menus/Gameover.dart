@@ -1,16 +1,19 @@
-import 'dart:math';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:ugh_videojuego/games/UghGame.dart';
 
 class Gameover extends StatelessWidget {
-  // Referencia al juego principal.
   final UghGame game;
+  final VoidCallback onRestart;
 
-  const Gameover({Key? key, required this.game}) : super(key: key);
+  const Gameover({
+    super.key,
+    required this.game,
+    required this.onRestart
+  });
 
   @override
   Widget build(BuildContext context) {
-    const blackTextColor = Color.fromRGBO(0, 0, 0, 1.0);
     const whiteTextColor = Color.fromRGBO(255, 255, 255, 1.0);
 
     return Material(
@@ -18,11 +21,10 @@ class Gameover extends StatelessWidget {
       child: Center(
         child: Container(
           padding: const EdgeInsets.all(20.0),
-          height: 400,
-          width: 600,
+          height: 200,
+          width: 300,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(20)),
-            // Gradiente que va de un púrpura profundo a negro
             gradient: const LinearGradient(
               colors: [Color(0xFF5D3FD3), Colors.black],
               begin: Alignment.topCenter,
@@ -39,12 +41,11 @@ class Gameover extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Título "Fin" con sombra y mayor énfasis
               Text(
                 'GAME OVER',
                 style: TextStyle(
                   color: whiteTextColor,
-                  fontSize: 40,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   shadows: [
                     Shadow(
@@ -56,12 +57,49 @@ class Gameover extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              // Botón de "Restart" para reiniciar el juego
-
+              ElevatedButton(
+                onPressed: onRestart,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                ),
+                child: const Text('Reiniciar Juego'),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class GameRestartWidget extends StatefulWidget {
+  const GameRestartWidget({super.key});
+
+  @override
+  _GameRestartWidgetState createState() => _GameRestartWidgetState();
+}
+
+class _GameRestartWidgetState extends State<GameRestartWidget> {
+  Key _gameKey = UniqueKey();
+
+  void restartGame() {
+    setState(() {
+      _gameKey = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GameWidget<UghGame>.controlled(
+      key: _gameKey,
+      gameFactory: UghGame.new,
+      overlayBuilderMap: {
+        'gameover': (_, game) => Gameover(
+          game: game,
+          onRestart: restartGame,
+        ),
+      },
     );
   }
 }

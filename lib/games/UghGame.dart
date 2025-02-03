@@ -6,19 +6,30 @@ import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:ugh_videojuego/objects/ground_block.dart';
 import 'package:ugh_videojuego/players/EmberPlayer.dart';
+import 'package:ugh_videojuego/players/Secondplayer.dart';
+
+import '../components/Enemy.dart';
 
 class UghGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
   final world = World();
   late final CameraComponent cameraComponent;
   late EmberPlayer player;
+  late Secondplayer player2;
   late ParallaxComponent parallax;
 
   @override
   Future<void> onLoad() async {
     // Carga todas las imágenes necesarias
     await images.loadAll([
+      "Dude_Monster.png",
+      'Dude_Monster_Walk_6.png',
+      "Dude_Monster_Jump_8.png",
       'Owlet_Monster_Walk_6.png',
       'fondo.png',
+      'Pink_Monster_Walk_6.png',
+      'Pink_Monster_Jump_8.png',
+      'Owlet_Monster_Death_8.png',
+      'Dude_Monster_Death_8.png',
       "Owlet_Monster_Jump_8.png",
       "Owlet_Monster.png"// Asegúrate de tener esta imagen en tus assets
     ]);
@@ -45,7 +56,12 @@ class UghGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionD
 
     // Crea el jugador y añade al mundo
     player = EmberPlayer(position: Vector2(100, 100));
+    player2 = Secondplayer(position: Vector2(100, 100));
+    final enemy = Enemy(position: Vector2(400, 100));
+
     world.add(player);
+    world.add(player2);
+    world.add(enemy);
 
     // Añade los bloques del suelo al mundo
     final colisionSuelos = map.tileMap.getLayer<ObjectGroup>('suelo');

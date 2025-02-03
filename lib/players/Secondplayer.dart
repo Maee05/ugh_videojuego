@@ -6,9 +6,9 @@ import 'package:ugh_videojuego/games/UghGame.dart';
 
 import '../objects/ground_block.dart';
 
-class EmberPlayer extends SpriteAnimationComponent
+class Secondplayer extends SpriteAnimationComponent
     with HasGameReference<UghGame>, KeyboardHandler, CollisionCallbacks {
-  EmberPlayer({
+  Secondplayer({
     required super.position,
   }) : super(size: Vector2(64, 64), anchor: Anchor.center);
 
@@ -41,7 +41,7 @@ class EmberPlayer extends SpriteAnimationComponent
     ));
 
     animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('Owlet_Monster.png'),
+      game.images.fromCache('Dude_Monster.png'),
       SpriteAnimationData.sequenced(
         amount: 6,
         textureSize: Vector2.all(32),
@@ -51,7 +51,7 @@ class EmberPlayer extends SpriteAnimationComponent
     previousPosition = position.clone();
 
     walkAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('Owlet_Monster_Walk_6.png'),
+      game.images.fromCache('Dude_Monster_Walk_6.png'),
       SpriteAnimationData.sequenced(
         amount: 6,
         textureSize: Vector2.all(32),
@@ -61,7 +61,7 @@ class EmberPlayer extends SpriteAnimationComponent
     previousPosition = position.clone();
 
     jumpAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('Owlet_Monster_Jump_8.png'),
+      game.images.fromCache('Dude_Monster_Jump_8.png'),
       SpriteAnimationData.sequenced(
         amount: 6,
         textureSize: Vector2.all(32),
@@ -71,8 +71,7 @@ class EmberPlayer extends SpriteAnimationComponent
     previousPosition = position.clone();
 
     deathAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('Owlet_Monster_Death_8.png'),
-      // o 'Dude_Monster_Death_8.png' para Secondplayer
+      game.images.fromCache('Dude_Monster_Death_8.png'), // o 'Dude_Monster_Death_8.png' para Secondplayer
       SpriteAnimationData.sequenced(
         amount: 8,
         textureSize: Vector2.all(32),
@@ -80,6 +79,9 @@ class EmberPlayer extends SpriteAnimationComponent
         loop: false,
       ),
     );
+
+
+
   }
 
   @override
@@ -87,11 +89,8 @@ class EmberPlayer extends SpriteAnimationComponent
     super.update(dt);
     previousPosition = position.clone();
 
-
       if (isDying) return;
       super.update(dt);
-
-
 
     if (!isRightWall && horizontalDirection > 0) {
       velocity.x = horizontalDirection * moveSpeed;
@@ -139,10 +138,16 @@ class EmberPlayer extends SpriteAnimationComponent
           position.y = previousPosition.y;
           velocity.y = 0;
           suelocontacto = false;
+
+
+
         } else {
           position.y = previousPosition.y;
           velocity.y = 0;
           suelocontacto = true;
+
+
+
         }
       } else {
         if (normal.x < 0) {
@@ -169,31 +174,33 @@ class EmberPlayer extends SpriteAnimationComponent
     if (isDying) return true;
     horizontalDirection = 0;
 
-    if (keysPressed.contains(LogicalKeyboardKey.keyA)) {
+
+
+    if(keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
       horizontalDirection = -1;
       animation = walkAnimation;
-    } else if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
+    } else if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
       horizontalDirection = 1;
       animation = walkAnimation;
     }
 
 
-    if (keysPressed.contains(LogicalKeyboardKey.space) ||
-        keysPressed.contains(LogicalKeyboardKey.keyW)) {
+    if(keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
+
       jump();
+
     }
 
     return true;
   }
-
   void jump() {
     if (suelocontacto == true) {
       velocity.y = jumpForce;
       suelocontacto = false;
       animation = jumpAnimation;
     }
-  }
 
+  }
   void die() {
     if (!isDying) {
       isDying = true;
@@ -210,6 +217,5 @@ class EmberPlayer extends SpriteAnimationComponent
       });
     }
   }
+
 }
-
-

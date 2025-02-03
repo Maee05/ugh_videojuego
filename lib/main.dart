@@ -1,15 +1,11 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:ugh_videojuego/menus/Gameover.dart';
-import 'games/UghGame.dart';
+import 'package:ugh_videojuego/components/GameRestartWidget.dart';
 
 void main() {
-  runApp(
-    GameWidget<UghGame>.controlled(
-      gameFactory: UghGame.new,
-      overlayBuilderMap: {
-        'gameover': (_, game) => Gameover(game: game),
-        },
-      ),
-  );
+  runApp(MaterialApp(
+    home: GameRestartWidget(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+  ));
 }

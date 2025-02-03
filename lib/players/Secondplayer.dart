@@ -211,6 +211,8 @@ class Secondplayer extends SpriteAnimationComponent
       velocity.x = 0;
       velocity.y = 0;
 
+      game.vivos--;
+
       // Remover después de la animación
       Future.delayed(Duration(seconds: 1), () {
         removeFromParent();

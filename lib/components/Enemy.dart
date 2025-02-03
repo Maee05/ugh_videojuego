@@ -47,6 +47,10 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<UghGame>, Col
     if (target != null) {
       _moveTowardsTarget(target, dt);
     }
+
+    if(game.vivos<=0){
+      game.overlays.add('gameover');
+    }
   }
 
   // Encuentra el jugador más cercano
